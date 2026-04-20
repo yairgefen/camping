@@ -8,16 +8,21 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #f5f4f0; color: #1a1a1a; direction: rtl; }
     .app { max-width: 640px; margin: 0 auto; padding: 0 16px 60px; }
-    .header { padding: 1.25rem 0 1rem; border-bottom: 1px solid #e0ddd6; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
-    .header h1 { font-size: 20px; font-weight: 600; }
-    .header p { font-size: 13px; color: #666; margin-top: 3px; }
-    .edit-btn { padding: 6px 14px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #fff; color: #444; white-space: nowrap; }
+
+    /* header */
+    .header { padding: 1.25rem 0 0.75rem; border-bottom: 1px solid #e0ddd6; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .header h1 { font-size: 20px; font-weight: 600; white-space: nowrap; }
+    .edit-btn { padding: 6px 14px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #fff; color: #444; white-space: nowrap; flex-shrink: 0; }
     .edit-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
-    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1rem; }
-    .stat { background: #fff; border-radius: 8px; border: 1px solid #e0ddd6; padding: 10px 12px; text-align: center; }
-    .stat-num { font-size: 20px; font-weight: 600; }
-    .stat-label { font-size: 11px; color: #888; margin-top: 2px; }
-    .tabs-wrapper { display: flex; align-items: center; border-bottom: 1px solid #e0ddd6; margin-bottom: 1rem; overflow-x: auto; gap: 2px; padding-bottom: 0; }
+
+    /* shared notes */
+    .notes-box { margin-bottom: 0.75rem; }
+    .notes-box textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #e0ddd6; font-size: 14px; font-family: Arial, sans-serif; background: #fff; color: #1a1a1a; resize: vertical; min-height: 64px; direction: rtl; line-height: 1.5; }
+    .notes-box textarea:focus { outline: none; border-color: #aaa; }
+    .notes-label { font-size: 11px; color: #999; margin-bottom: 4px; }
+
+    /* tabs */
+    .tabs-wrapper { display: flex; align-items: center; border-bottom: 1px solid #e0ddd6; margin-bottom: 1rem; overflow-x: auto; gap: 2px; }
     .tab { padding: 8px 13px; font-size: 14px; cursor: pointer; border: none; background: none; color: #888; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; flex-shrink: 0; }
     .tab.active { color: #1a1a1a; border-bottom-color: #1a1a1a; font-weight: 500; }
     .tab-edit-wrap { display: flex; align-items: center; gap: 3px; flex-shrink: 0; margin-left: 4px; }
@@ -26,30 +31,55 @@
     .tab-del-btn:hover { background: #fee2e2; color: #b91c1c; }
     .add-tab-btn { padding: 5px 10px; border-radius: 6px; border: 1px dashed #bbb; font-size: 12px; cursor: pointer; background: none; color: #888; flex-shrink: 0; margin-right: 4px; }
     .add-tab-btn:hover { background: #f0efe9; }
-    .item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; border: 1px solid #e0ddd6; margin-bottom: 6px; background: #fff; }
-    .item.green { background: #f0fdf4; border-color: #86efac; }
-    .item.red   { background: #fff5f5; border-color: #fca5a5; }
-    .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
-    .dot.green { background: #22c55e; }
-    .dot.red   { background: #ef4444; }
-    .item-name { font-size: 14px; flex: 1; min-width: 0; }
-    .assignee-select { font-size: 13px; padding: 3px 6px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #555; cursor: pointer; direction: rtl; max-width: 130px; flex-shrink: 0; }
+
+    /* table layout for assignee tabs */
+    .list-table { width: 100%; border-collapse: separate; border-spacing: 0 5px; }
+    .list-table th { font-size: 11px; color: #999; font-weight: 500; padding: 0 8px 4px; text-align: right; }
+    .list-table th.th-units { width: 62px; text-align: center; }
+    .list-table th.th-who   { width: 130px; }
+    .list-table th.th-del   { width: 28px; }
+    .list-table td { background: #fff; padding: 7px 8px; border-top: 1px solid #e0ddd6; border-bottom: 1px solid #e0ddd6; vertical-align: middle; }
+    .list-table td:first-child { border-right: 1px solid #e0ddd6; border-radius: 0 8px 8px 0; }
+    .list-table td:last-child  { border-left:  1px solid #e0ddd6; border-radius: 8px 0 0 8px; }
+    .row-green td { background: #f0fdf4; border-color: #86efac; }
+    .row-yellow td { background: #fefce8; border-color: #fde047; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-left: 6px; vertical-align: middle; flex-shrink: 0; }
+    .dot.green  { background: #22c55e; }
+    .dot.yellow { background: #eab308; }
+    .item-name { font-size: 14px; }
+    .units-input { width: 54px; font-size: 13px; padding: 3px 5px; border-radius: 6px; border: 1px solid #ddd; text-align: center; background: #fff; color: #1a1a1a; direction: ltr; }
+    .units-input:focus { outline: none; border-color: #aaa; }
+    .assignee-select { font-size: 13px; padding: 3px 6px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #555; cursor: pointer; direction: rtl; width: 100%; }
     .assignee-select.assigned { border-color: #86efac; background: #f0fdf4; color: #166534; font-weight: 500; }
-    .del-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ddd; background: none; cursor: pointer; color: #999; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .del-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ddd; background: none; cursor: pointer; color: #999; font-size: 15px; display: flex; align-items: center; justify-content: center; }
     .del-btn:hover { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+
+    /* info tab (family) */
+    .item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; border: 1px solid #e0ddd6; margin-bottom: 6px; background: #fff; }
+    .item-name-plain { font-size: 14px; flex: 1; }
+
+    /* add row */
     .add-row { display: flex; gap: 8px; margin-top: 8px; }
     .add-row input { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; direction: rtl; }
     .add-row button { padding: 8px 16px; border-radius: 8px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #f5f4f0; white-space: nowrap; }
     .add-row button:hover { background: #e8e6e0; }
+
+    /* notice */
     .notice { font-size: 12px; color: #666; background: #f5f4f0; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; }
+
+    /* people tab */
     .participants-grid { display: flex; flex-wrap: wrap; gap: 8px; }
     .p-chip { display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid #e0ddd6; font-size: 14px; }
     .user-add-row { display: flex; gap: 8px; margin-top: 12px; }
     .user-add-row input { flex: 1; padding: 7px 12px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; direction: rtl; }
     .user-add-row button { padding: 6px 16px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #f5f4f0; }
+
+    /* reset */
     .reset-section { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e0ddd6; }
     .reset-btn { padding: 7px 16px; border-radius: 8px; border: 1px solid #fca5a5; font-size: 13px; cursor: pointer; background: none; color: #b91c1c; }
     .reset-btn:hover { background: #fee2e2; }
+
+    /* saving */
     .saving { position: fixed; bottom: 16px; left: 16px; font-size: 12px; color: #888; background: #fff; border: 1px solid #e0ddd6; border-radius: 999px; padding: 4px 12px; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .saving.show { opacity: 1; }
   </style>
@@ -79,13 +109,16 @@
 
 <div class="app">
   <div class="header">
-    <div>
-      <h1>⛺ קמפינג היורשים</h1>
-      <p id="headerSub">סמן מי מביא כל פריט</p>
-    </div>
+    <h1>⛺ קמפינג היורשים</h1>
     <button class="edit-btn" id="editBtn" onclick="toggleEdit()">עריכה</button>
   </div>
-  <div class="stats"       id="stats"></div>
+
+  <!-- shared notes -->
+  <div class="notes-box">
+    <div class="notes-label">📝 הערות משותפות — כולם רואים ויכולים לכתוב</div>
+    <textarea id="notesArea" placeholder="כתבו כאן הערות, תזכורות, הודעות לקבוצה..." onblur="saveNotes()" oninput="notesChanged()"></textarea>
+  </div>
+
   <div class="tabs-wrapper" id="tabsWrapper"></div>
   <div id="content"></div>
 </div>
@@ -111,10 +144,12 @@ const DEFAULT_LISTS = {
 const PRESETS = { 'פק"ל קפה + כוסות':'נמש', 'עצים למדורה':'ירדן' };
 
 /* ── state ────────────────────────────────────────────── */
-let currentTab = 'shared';
-let editMode   = false;
-let data       = { users:[], tabs:[], lists:{}, checks:{} };
-let saveTimer  = null;
+let currentTab   = 'shared';
+let editMode     = false;
+let notesDirty   = false;
+let data         = { users:[], tabs:[], lists:{}, checks:{}, units:{}, notes:'' };
+let saveTimer    = null;
+let notesTimer   = null;
 
 /* ── firebase ─────────────────────────────────────────── */
 function showSaving() {
@@ -134,6 +169,8 @@ async function loadData() {
   if (snap.exists()) {
     data = snap.val();
     data.checks = data.checks || {};
+    data.units  = data.units  || {};
+    data.notes  = data.notes  || '';
     data.lists  = data.lists  || JSON.parse(JSON.stringify(DEFAULT_LISTS));
     data.users  = data.users  || [...DEFAULT_USERS];
     data.tabs   = data.tabs   || DEFAULT_TABS.map(t => ({...t}));
@@ -142,38 +179,58 @@ async function loadData() {
       users:  [...DEFAULT_USERS],
       tabs:   DEFAULT_TABS.map(t => ({...t})),
       lists:  JSON.parse(JSON.stringify(DEFAULT_LISTS)),
-      checks: {}
+      checks: {}, units: {}, notes: ''
     };
     for (const [item,user] of Object.entries(PRESETS))
       data.checks['shared_'+item] = { user, ts:0 };
     await saveData();
   }
+  // live listener — skip if we just saved notes to avoid cursor jump
   window._onValue(window._ref(window._db, 'campingData'), s => {
     if (!s.exists()) return;
-    data = s.val();
-    data.checks = data.checks || {};
-    data.tabs   = data.tabs   || DEFAULT_TABS.map(t => ({...t}));
+    const incoming = s.val();
+    incoming.checks = incoming.checks || {};
+    incoming.units  = incoming.units  || {};
+    incoming.tabs   = incoming.tabs   || DEFAULT_TABS.map(t => ({...t}));
+    incoming.notes  = incoming.notes  || '';
+    // only update notes textarea if not currently editing it
+    const notesEl = document.getElementById('notesArea');
+    const notesFocused = notesEl && document.activeElement === notesEl;
+    data = incoming;
     renderAll();
+    if (!notesFocused) notesEl.value = data.notes || '';
   });
 }
 
+/* ── notes ────────────────────────────────────────────── */
+function notesChanged() {
+  notesDirty = true;
+  clearTimeout(notesTimer);
+  notesTimer = setTimeout(saveNotes, 1500);
+}
+async function saveNotes() {
+  if (!notesDirty) return;
+  notesDirty = false;
+  data.notes = document.getElementById('notesArea').value;
+  await saveData();
+}
+
 /* ── helpers ──────────────────────────────────────────── */
-const esc = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;');
-const getTab     = id  => (data.tabs||[]).find(t => t.id === id);
-const tabItems   = id  => data.lists[id] || [];
-const assignee   = (tid,item) => data.checks[tid+'_'+item]?.user || '';
+const esc      = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;');
+const getTab   = id => (data.tabs||[]).find(t => t.id === id);
+const tabItems = id => data.lists[id] || [];
+const assignee = (tid,item) => data.checks[tid+'_'+item]?.user || '';
+const unitKey  = (tid,item) => tid+'__units__'+item;
+const getUnits = (tid,item) => data.units[unitKey(tid,item)] || '';
 
 /* ── render ───────────────────────────────────────────── */
-function renderAll() { renderTabs(); renderStats(); renderContent(); }
-
-function renderStats() {
-  const assigneeTabs = (data.tabs||[]).filter(t => t.type==='assignee');
-  let total=0, done=0;
-  assigneeTabs.forEach(t => tabItems(t.id).forEach(i => { total++; if (assignee(t.id,i)) done++; }));
-  document.getElementById('stats').innerHTML = `
-    <div class="stat"><div class="stat-num">${done}/${total}</div><div class="stat-label">פריטים מכוסים</div></div>
-    <div class="stat"><div class="stat-num">${tabItems('family').length}</div><div class="stat-label">ציוד משפחתי</div></div>
-    <div class="stat"><div class="stat-num">${data.users.length}</div><div class="stat-label">משתתפים</div></div>`;
+function renderAll() {
+  renderTabs();
+  renderContent();
+  // sync notes if not focused
+  const notesEl = document.getElementById('notesArea');
+  if (notesEl && document.activeElement !== notesEl)
+    notesEl.value = data.notes || '';
 }
 
 function renderTabs() {
@@ -198,8 +255,8 @@ function renderContent() {
   const el  = document.getElementById('content');
   const tab = getTab(currentTab);
   if (!tab) { el.innerHTML=''; return; }
-  if (tab.type==='people')   { renderPeopleTab(el); return; }
-  if (tab.type==='info')     { renderInfoTab(el, tab); return; }
+  if (tab.type==='people') { renderPeopleTab(el); return; }
+  if (tab.type==='info')   { renderInfoTab(el, tab); return; }
   renderAssigneeTab(el, tab);
 }
 
@@ -214,7 +271,10 @@ function renderPeopleTab(el) {
 
 function renderInfoTab(el, tab) {
   const rows = tabItems(tab.id).map(item =>
-    `<div class="item"><span class="item-name">${esc(item)}</span>${editMode?`<button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button>`:''}</div>`
+    `<div class="item">
+      <span class="item-name-plain" style="flex:1">${esc(item)}</span>
+      ${editMode?`<button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button>`:''}
+    </div>`
   ).join('');
   const add = editMode ? addRowHTML(tab.id) : '';
   el.innerHTML = `<div class="notice">רשימת המלצות גורפת — ציוד שכדאי שכל משפחה תביא</div>${rows}${add}`;
@@ -222,24 +282,53 @@ function renderInfoTab(el, tab) {
 
 function renderAssigneeTab(el, tab) {
   const opts = data.users.map(u => `<option value="${esc(u)}">${esc(u)}</option>`).join('');
-  const rows = tabItems(tab.id).map(item => {
-    const asgn  = assignee(tab.id, item);
-    const color = asgn ? 'green' : 'red';
-    const sel   = !editMode
-      ? `<select class="assignee-select${asgn?' assigned':''}"
-           data-tab="${tab.id}" data-item="${esc(item)}"
-           onchange="setAssignee(this)" onclick="event.stopPropagation()">
-           <option value="">— לא שויך —</option>${opts}
-         </select>`
+  const showUnits = (tab.type === 'assignee');
+
+  let html = `<table class="list-table">
+    <thead><tr>
+      <th></th>
+      <th>פריט</th>
+      ${showUnits ? '<th class="th-units">יחידות</th>' : ''}
+      ${!editMode ? '<th class="th-who">מי מביא?</th>' : ''}
+      ${editMode  ? '<th class="th-del"></th>' : ''}
+    </tr></thead><tbody>`;
+
+  tabItems(tab.id).forEach(item => {
+    const asgn   = assignee(tab.id, item);
+    const units  = getUnits(tab.id, item);
+    const rowCls = asgn ? 'row-green' : 'row-yellow';
+    const dotCls = asgn ? 'green' : 'yellow';
+
+    const unitCell = showUnits
+      ? `<td style="text-align:center"><input class="units-input" type="text" value="${esc(units)}"
+            data-tab="${tab.id}" data-item="${esc(item)}"
+            onchange="setUnits(this)" onclick="event.stopPropagation()"
+            placeholder="—"></td>`
       : '';
-    const del = editMode ? `<button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button>` : '';
-    return `<div class="item ${color}" id="row_${tab.id}_${esc(item)}">
-      <div class="dot ${color}"></div>
-      <span class="item-name">${esc(item)}</span>
-      ${sel}${del}
-    </div>`;
-  }).join('');
-  el.innerHTML = rows + (editMode ? addRowHTML(tab.id) : '');
+
+    const whoCell = !editMode
+      ? `<td><select class="assignee-select${asgn?' assigned':''}"
+              data-tab="${tab.id}" data-item="${esc(item)}"
+              onchange="setAssignee(this)" onclick="event.stopPropagation()">
+              <option value="">— לא שויך —</option>${opts}
+            </select></td>`
+      : '';
+
+    const delCell = editMode
+      ? `<td><button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button></td>`
+      : '';
+
+    html += `<tr class="${editMode ? '' : rowCls}">
+      <td style="width:20px;text-align:center">${editMode ? '' : `<span class="dot ${dotCls}"></span>`}</td>
+      <td><span class="item-name">${esc(item)}</span></td>
+      ${unitCell}${whoCell}${delCell}
+    </tr>`;
+  });
+
+  html += `</tbody></table>`;
+  if (editMode) html += addRowHTML(tab.id);
+  el.innerHTML = html;
+
   // set dropdown values after render
   if (!editMode) {
     el.querySelectorAll('.assignee-select').forEach(sel => {
@@ -257,17 +346,24 @@ async function setAssignee(sel) {
   const { tab, item } = sel.dataset;
   const val = sel.value;
   const k   = tab + '_' + item;
-  if (val) { data.checks[k] = { user:val, ts:Date.now() }; }
-  else     { delete data.checks[k]; }
+  if (val) data.checks[k] = { user:val, ts:Date.now() };
+  else     delete data.checks[k];
   await saveData();
-  renderStats();
-  // update row color without full re-render
-  const row = sel.closest('.item');
-  const dot = row.querySelector('.dot');
-  const color = val ? 'green' : 'red';
-  row.className = 'item ' + color;
-  dot.className = 'dot '  + color;
-  sel.className = 'assignee-select' + (val ? ' assigned' : '');
+  // update row in-place
+  const row = sel.closest('tr');
+  if (row) {
+    const color = val ? 'row-green' : 'row-yellow';
+    row.className = color;
+    const dot = row.querySelector('.dot');
+    if (dot) dot.className = 'dot ' + (val ? 'green' : 'yellow');
+    sel.className = 'assignee-select' + (val ? ' assigned' : '');
+  }
+}
+
+async function setUnits(inp) {
+  const { tab, item } = inp.dataset;
+  data.units[unitKey(tab, item)] = inp.value.trim();
+  await saveData();
 }
 
 function switchTab(id) { currentTab=id; renderTabs(); renderContent(); }
@@ -276,9 +372,6 @@ function toggleEdit() {
   editMode = !editMode;
   document.getElementById('editBtn').classList.toggle('active', editMode);
   document.getElementById('editBtn').textContent = editMode ? 'סיום עריכה' : 'עריכה';
-  document.getElementById('headerSub').textContent = editMode
-    ? 'מצב עריכה — ניתן לערוך הכל'
-    : 'סמן מי מביא כל פריט';
   renderAll();
 }
 
@@ -305,12 +398,13 @@ async function addItem(tid) {
   if (!data.lists[tid]) data.lists[tid]=[];
   if (data.lists[tid].includes(v)) return;
   data.lists[tid].push(v); inp.value='';
-  await saveData(); renderContent(); renderStats();
+  await saveData(); renderContent();
 }
 async function delItem(tid, item) {
   data.lists[tid] = (data.lists[tid]||[]).filter(x=>x!==item);
   delete data.checks[tid+'_'+item];
-  await saveData(); renderContent(); renderStats();
+  delete data.units[unitKey(tid,item)];
+  await saveData(); renderContent();
 }
 
 async function addTab() {
@@ -337,13 +431,13 @@ async function renameTab(id, newLabel) {
 }
 async function resetChecks() {
   if (!confirm('לאפס את כל הסימונים לקמפינג חדש?')) return;
-  data.checks={};
+  data.checks={}; data.units={};
   await saveData(); renderAll();
 }
 
 /* ── expose globals ───────────────────────────────────── */
-Object.assign(window, { setAssignee, switchTab, toggleEdit, addUser, delUser,
-  addItem, delItem, addTab, delTab, renameTab, resetChecks });
+Object.assign(window, { setAssignee, setUnits, switchTab, toggleEdit, saveNotes, notesChanged,
+  addUser, delUser, addItem, delItem, addTab, delTab, renameTab, resetChecks });
 
 loadData().then(renderAll);
 </script>
