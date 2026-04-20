@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>קמפינג היורשים</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f5f4f0; color: #1a1a1a; direction: rtl; }
+    .app { max-width: 640px; margin: 0 auto; padding: 0 16px 40px; }
+    .header { padding: 1.25rem 0 1rem; border-bottom: 1px solid #e0ddd6; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; }
+    .header h1 { font-size: 20px; font-weight: 600; }
+    .header p { font-size: 13px; color: #666; margin-top: 3px; }
+    .edit-btn { padding: 6px 14px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #fff; color: #444; }
+    .edit-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+    .user-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1rem; align-items: center; }
+    .user-btn { padding: 5px 14px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #fff; color: #555; }
+    .user-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; font-weight: 500; }
+    .tabs { display: flex; border-bottom: 1px solid #e0ddd6; margin-bottom: 1rem; }
+    .tab { padding: 8px 16px; font-size: 14px; cursor: pointer; border: none; background: none; color: #888; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .tab.active { color: #1a1a1a; border-bottom-color: #1a1a1a; font-weight: 500; }
+    .item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 8px; border: 1px solid #e0ddd6; margin-bottom: 6px; background: #fff; user-select: none; }
+    .item.clickable { cursor: pointer; }
+    .item.clickable:hover { background: #f5f4f0; }
+    .item.checked { opacity: 0.55; }
+    .item.checked .item-name { text-decoration: line-through; color: #888; }
+    .checkbox { width: 18px; height: 18px; border-radius: 4px; border: 1px solid #bbb; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+    .checkbox.on { background: #1a1a1a; border-color: #1a1a1a; }
+    .checkbox.on::after { content: ''; display: block; width: 5px; height: 9px; border: 1.5px solid #fff; border-top: none; border-left: none; transform: rotate(45deg) translate(-1px,-1px); }
+    .item-name { font-size: 14px; flex: 1; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: #e8f0fe; color: #1a56db; white-space: nowrap; }
+    .badge.me { background: #d1fae5; color: #065f46; }
+    .del-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ddd; background: none; cursor: pointer; color: #999; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .del-btn:hover { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
+    .add-row { display: flex; gap: 8px; margin-top: 8px; }
+    .add-row input { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; direction: rtl; }
+    .add-row button { padding: 8px 16px; border-radius: 8px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #f5f4f0; white-space: nowrap; }
+    .add-row button:hover { background: #e8e6e0; }
+    .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 1rem; }
+    .stat { background: #fff; border-radius: 8px; border: 1px solid #e0ddd6; padding: 10px 12px; text-align: center; }
+    .stat-num { font-size: 20px; font-weight: 600; }
+    .stat-label { font-size: 11px; color: #888; margin-top: 2px; }
+    .notice { font-size: 12px; color: #666; background: #f5f4f0; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; }
+    .reset-section { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e0ddd6; }
+    .reset-btn { padding: 7px 16px; border-radius: 8px; border: 1px solid #fca5a5; font-size: 13px; cursor: pointer; background: none; color: #b91c1c; }
+    .reset-btn:hover { background: #fee2e2; }
+    .user-chip { display: flex; align-items: center; gap: 4px; }
+    .user-add-row { display: flex; gap: 8px; margin-top: 8px; }
+    .user-add-row input { flex: 1; padding: 5px 12px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; direction: rtl; }
+    .user-add-row button { padding: 5px 14px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #f5f4f0; }
+    .saving { position: fixed; bottom: 16px; left: 16px; font-size: 12px; color: #888; background: #fff; border: 1px solid #e0ddd6; border-radius: 999px; padding: 4px 12px; opacity: 0; transition: opacity 0.3s; }
+    .saving.show { opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     הגדרת FIREBASE — החלף את הערכים האלו בשלך!
+     ראה הוראות בתחתית הקובץ
+============================================================ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBfGbeAmbJTic4p8oeeaF3kjhh20U7pvd0",
+    authDomain: "camping-f03e6.firebaseapp.com",
+    databaseURL: "https://camping-f03e6-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "camping-f03e6",
+    storageBucket: "camping-f03e6.firebasestorage.app",
+    messagingSenderId: "477196719253",
+    appId: "1:477196719253:web:3341511eb05ae0246ab79c",
+    measurementId: "G-EXX04SGVBZ"
+  };
+
+  const firebaseApp = initializeApp(firebaseConfig);
+  const db = getDatabase(firebaseApp);
+  window._db = db;
+  window._ref = ref;
+  window._set = set;
+  window._onValue = onValue;
+  window._get = get;
+  window._firebaseReady = true;
+  window.dispatchEvent(new Event('firebaseReady'));
+</script>
+
+<div class="app">
+  <div class="header">
+    <div>
+      <h1>⛺ קמפינג היורשים</h1>
+      <p id="headerSub">בחר את השם שלך וסמן את מה שאתה מביא</p>
+    </div>
+    <button class="edit-btn" id="editBtn" onclick="toggleEdit()">עריכה</button>
+  </div>
+  <div class="user-bar" id="userBar"></div>
+  <div class="stats" id="stats"></div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('shared')">ציוד משותף</button>
+    <button class="tab" onclick="switchTab('family')">ציוד משפחתי</button>
+    <button class="tab" onclick="switchTab('super')">קניות סופר</button>
+    <button class="tab" onclick="switchTab('butcher')">קניות אטליז</button>
+  </div>
+  <div id="content"></div>
+</div>
+<div class="saving" id="savingIndicator">שומר...</div>
+
+<script>
+const DEFAULT_USERS = ['גפן','אלעד','צמח','דור','דידי','דן','ירדן','מייקל','מתן',"ניר ג'קי",'נמש','סער','שנירו'];
+const DEFAULT_LISTS = {
+  shared: ['מנגל','פק"ל קפה + כוסות','עצים למדורה','שולחן מתקפל 1','שולחן מתקפל 2','צידנית','גזייה','מחבת','סיר גדול','מלקחיים','קרש חיתוך גדול'],
+  family: ['אוהל','מחצלת','מזרן / שק"ש','כיסא מתקפל לכל אחד','תיק רחצה','רמקול JBL לזיווג חבורתי','פנס - עדיף תאורת חירום ביתית','מטען נייד','נייר טואלט','מגבונים לחים','קרם הגנה','אלתוש','תיק עזרה ראשונה','כובע','כפכפים','גרביים'],
+  super: ['עגבניות','מלפפונים','פירות','שיפודים','לחמניות','פיתות','טחינה','חמוצים','זיתים','שמן','מלח','פלפל','פפריקה','שוקולד למריחה','חמאת בוטנים','חטיפים לילדים','חטיפים מלוחים','שישיות מים','שתייה קלה','ויטמינצ׳יק','בירות','ערק','כוסות חד"פ','צלחות חד"פ','סכום חד"פ','קשים','תבניות חד"פ','נייר כסף','נייר סופג','שקיות זבל גדולות','נוזל כלים','ספוג','גחלים למנגל','מדליקי פחמים','קרח'],
+  butcher: ['פרגיות לילדים','קבבים','סטייקים']
+};
+const DEFAULT_PRESETS = {'פק"ל קפה + כוסות':'נמש','עצים למדורה':'ירדן'};
+
+let currentUser = null;
+let currentTab = 'shared';
+let editMode = false;
+let data = { users: [], lists: {}, checks: {} };
+let saveTimeout = null;
+
+function showSaving() {
+  const el = document.getElementById('savingIndicator');
+  el.classList.add('show');
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => el.classList.remove('show'), 1500);
+}
+
+async function loadData() {
+  if (!window._firebaseReady) {
+    await new Promise(r => window.addEventListener('firebaseReady', r, {once:true}));
+  }
+  const snapshot = await window._get(window._ref(window._db, 'campingData'));
+  if (snapshot.exists()) {
+    data = snapshot.val();
+    if (!data.checks) data.checks = {};
+    if (!data.lists) data.lists = JSON.parse(JSON.stringify(DEFAULT_LISTS));
+    if (!data.users) data.users = [...DEFAULT_USERS];
+  } else {
+    data = {
+      users: [...DEFAULT_USERS],
+      lists: JSON.parse(JSON.stringify(DEFAULT_LISTS)),
+      checks: {}
+    };
+    for (const [item, user] of Object.entries(DEFAULT_PRESETS)) {
+      data.checks['shared_' + item] = { user, ts: 0 };
+    }
+    await saveData();
+  }
+  window._onValue(window._ref(window._db, 'campingData'), snapshot => {
+    if (snapshot.exists()) {
+      data = snapshot.val();
+      if (!data.checks) data.checks = {};
+      renderUsers(); renderStats(); renderContent();
+    }
+  });
+}
+
+async function saveData() {
+  await window._set(window._ref(window._db, 'campingData'), data);
+  showSaving();
+}
+
+function renderUsers() {
+  const bar = document.getElementById('userBar');
+  if (editMode) {
+    bar.innerHTML = data.users.map(u =>
+      `<span class="user-chip">
+        <button class="user-btn active" style="cursor:default">${u}</button>
+        <button class="del-btn" onclick="delUser(this)" data-name="${u}">×</button>
+      </span>`
+    ).join('') +
+    `<div class="user-add-row">
+      <input id="newUserInput" placeholder="שם חדש..." onkeydown="if(event.key==='Enter')addUser()">
+      <button onclick="addUser()">+ הוסף</button>
+    </div>`;
+  } else {
+    bar.innerHTML = data.users.map(u =>
+      `<button class="user-btn ${currentUser === u ? 'active' : ''}" onclick="selectUser(this)" data-name="${u}">${u}</button>`
+    ).join('');
+  }
+}
+
+function selectUser(btn) {
+  if (editMode) return;
+  currentUser = btn.dataset.name;
+  renderUsers(); renderStats(); renderContent();
+}
+
+async function addUser() {
+  const inp = document.getElementById('newUserInput');
+  const v = inp.value.trim();
+  if (!v || data.users.includes(v)) return;
+  data.users.push(v); inp.value = '';
+  await saveData(); renderUsers();
+}
+
+async function delUser(btn) {
+  const u = btn.dataset.name;
+  if (!confirm('למחוק את ' + u + ' מהרשימה?')) return;
+  data.users = data.users.filter(x => x !== u);
+  if (currentUser === u) currentUser = null;
+  await saveData(); renderUsers(); renderStats();
+}
+
+function toggleEdit() {
+  editMode = !editMode;
+  document.getElementById('editBtn').classList.toggle('active', editMode);
+  document.getElementById('editBtn').textContent = editMode ? 'סיום עריכה' : 'עריכה';
+  document.getElementById('headerSub').textContent = editMode
+    ? 'מצב עריכה — ניתן להוסיף ולמחוק פריטים ומשתתפים'
+    : 'בחר את השם שלך וסמן את מה שאתה מביא';
+  renderUsers(); renderContent();
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach((t, i) =>
+    t.classList.toggle('active', ['shared','family','super','butcher'][i] === tab));
+  renderContent();
+}
+
+function renderStats() {
+  const tabs = ['shared','super','butcher'];
+  let total = 0, done = 0;
+  tabs.forEach(t => {
+    (data.lists[t] || []).forEach(i => { total++; if (data.checks[t + '_' + i]) done++; });
+  });
+  const famTotal = (data.lists.family || []).length;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="stat-num">${done}/${total}</div><div class="stat-label">ציוד+קניות מכוסה</div></div>
+    <div class="stat"><div class="stat-num">${famTotal}</div><div class="stat-label">פריטי ציוד משפחתי</div></div>
+    <div class="stat"><div class="stat-num">${data.users.length}</div><div class="stat-label">משתתפים</div></div>`;
+}
+
+async function toggleCheck(btn) {
+  if (editMode) return;
+  if (!currentUser) { alert('בחר שם תחילה'); return; }
+  const { prefix, item } = btn.dataset;
+  const k = prefix + '_' + item;
+  if (data.checks[k] && data.checks[k].user === currentUser) {
+    delete data.checks[k];
+  } else if (data.checks[k]) {
+    if (!confirm(data.checks[k].user + ' כבר סימן. לעדכן לשמך?')) return;
+    data.checks[k] = { user: currentUser, ts: Date.now() };
+  } else {
+    data.checks[k] = { user: currentUser, ts: Date.now() };
+  }
+  await saveData(); renderStats(); renderContent();
+}
+
+async function delItem(btn) {
+  const { tab, item } = btn.dataset;
+  data.lists[tab] = data.lists[tab].filter(x => x !== item);
+  delete data.checks[tab + '_' + item];
+  await saveData(); renderStats(); renderContent();
+}
+
+async function addItem(tab) {
+  const inp = document.getElementById('newItemInput_' + tab);
+  const v = inp.value.trim();
+  if (!v || data.lists[tab].includes(v)) return;
+  data.lists[tab].push(v); inp.value = '';
+  await saveData(); renderContent();
+}
+
+async function resetChecks() {
+  if (!confirm('לאפס את כל הסימונים לקמפינג חדש?')) return;
+  data.checks = {};
+  await saveData(); renderStats(); renderContent();
+}
+
+function renderContent() {
+  const el = document.getElementById('content');
+  const tab = currentTab;
+  const items = data.lists[tab] || [];
+  const addRow = editMode
+    ? `<div class="add-row"><input id="newItemInput_${tab}" placeholder="הוסף פריט..." onkeydown="if(event.key==='Enter')addItem('${tab}')"><button onclick="addItem('${tab}')">הוסף</button></div>`
+    : '';
+  const resetRow = editMode
+    ? `<div class="reset-section"><button class="reset-btn" onclick="resetChecks()">איפוס סימונים לקמפינג חדש</button></div>`
+    : '';
+
+  if (tab === 'family') {
+    el.innerHTML = `<div class="notice">רשימת המלצות גורפת — ציוד שכדאי שכל משפחה תביא</div>` +
+      items.map(item => {
+        const delBtn = editMode ? `<button class="del-btn" onclick="delItem(this)" data-tab="family" data-item="${item}">×</button>` : '';
+        return `<div class="item"><span class="item-name">${item}</span>${delBtn}</div>`;
+      }).join('') + addRow + resetRow;
+    return;
+  }
+
+  el.innerHTML = items.map(item => {
+    const k = tab + '_' + item;
+    const assignee = data.checks[k]?.user || null;
+    const isMe = assignee === currentUser;
+    const badge = assignee ? `<span class="badge ${isMe ? 'me' : ''}">${isMe ? 'אני — ' + assignee : assignee}</span>` : '';
+    const delBtn = editMode ? `<button class="del-btn" onclick="delItem(this)" data-tab="${tab}" data-item="${item}">×</button>` : '';
+    return `<div class="item ${!editMode ? 'clickable' : ''} ${assignee ? 'checked' : ''}" onclick="if(!${editMode})toggleCheck(this)" data-prefix="${tab}" data-item="${item}">
+      <div class="checkbox ${assignee ? 'on' : ''}"></div>
+      <span class="item-name">${item}</span>
+      ${badge}${delBtn}
+    </div>`;
+  }).join('') + addRow + resetRow;
+}
+
+loadData().then(() => { renderUsers(); renderStats(); renderContent(); });
+</script>
+
+<!--
+=================================================================
+  הוראות הגדרת Firebase (חינמי לגמרי)
+=================================================================
+
+1. היכנס ל: https://console.firebase.google.com
+2. לחץ "Add project" → תן שם (למשל "camping-yorshim") → Create
+3. בתפריט השמאלי: Build → Realtime Database → Create Database
+   - בחר אזור: europe-west1
+   - בחר "Start in test mode" (מאפשר קריאה/כתיבה לכולם)
+4. בתפריט השמאלי: Project Settings (גלגל שיניים למעלה)
+   - גלול ל"Your apps" → לחץ על סמל </> (Web)
+   - הוסף שם אפליקציה → Register app
+   - תקבל קוד firebaseConfig עם כל הערכים
+5. העתק את הערכים לתוך firebaseConfig בראש הקובץ הזה
+6. שמור → תעלה ל-GitHub Pages → זהו!
+=================================================================
+-->
+
+</body>
+</html>
