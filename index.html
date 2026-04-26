@@ -8,20 +8,14 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #f5f4f0; color: #1a1a1a; direction: rtl; }
     .app { max-width: 640px; margin: 0 auto; padding: 0 16px 60px; }
-
-    /* header */
     .header { padding: 1.25rem 0 0.75rem; border-bottom: 1px solid #e0ddd6; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .header h1 { font-size: 20px; font-weight: 600; white-space: nowrap; }
     .edit-btn { padding: 6px 14px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #fff; color: #444; white-space: nowrap; flex-shrink: 0; }
     .edit-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
-
-    /* shared notes */
     .notes-box { margin-bottom: 0.75rem; }
+    .notes-label { font-size: 11px; color: #999; margin-bottom: 4px; }
     .notes-box textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #e0ddd6; font-size: 14px; font-family: Arial, sans-serif; background: #fff; color: #1a1a1a; resize: vertical; min-height: 64px; direction: rtl; line-height: 1.5; }
     .notes-box textarea:focus { outline: none; border-color: #aaa; }
-    .notes-label { font-size: 11px; color: #999; margin-bottom: 4px; }
-
-    /* tabs */
     .tabs-wrapper { display: flex; align-items: center; border-bottom: 1px solid #e0ddd6; margin-bottom: 1rem; overflow-x: auto; gap: 2px; }
     .tab { padding: 8px 13px; font-size: 14px; cursor: pointer; border: none; background: none; color: #888; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; flex-shrink: 0; }
     .tab.active { color: #1a1a1a; border-bottom-color: #1a1a1a; font-weight: 500; }
@@ -31,19 +25,17 @@
     .tab-del-btn:hover { background: #fee2e2; color: #b91c1c; }
     .add-tab-btn { padding: 5px 10px; border-radius: 6px; border: 1px dashed #bbb; font-size: 12px; cursor: pointer; background: none; color: #888; flex-shrink: 0; margin-right: 4px; }
     .add-tab-btn:hover { background: #f0efe9; }
-
-    /* table layout for assignee tabs */
     .list-table { width: 100%; border-collapse: separate; border-spacing: 0 5px; }
     .list-table th { font-size: 11px; color: #999; font-weight: 500; padding: 0 8px 4px; text-align: right; }
     .list-table th.th-units { width: 62px; text-align: center; }
-    .list-table th.th-who   { width: 130px; }
-    .list-table th.th-del   { width: 28px; }
+    .list-table th.th-who { width: 130px; }
+    .list-table th.th-del { width: 28px; }
     .list-table td { background: #fff; padding: 7px 8px; border-top: 1px solid #e0ddd6; border-bottom: 1px solid #e0ddd6; vertical-align: middle; }
     .list-table td:first-child { border-right: 1px solid #e0ddd6; border-radius: 0 8px 8px 0; }
     .list-table td:last-child  { border-left:  1px solid #e0ddd6; border-radius: 8px 0 0 8px; }
-    .row-green td { background: #f0fdf4; border-color: #86efac; }
+    .row-green  td { background: #f0fdf4; border-color: #86efac; }
     .row-yellow td { background: #fefce8; border-color: #fde047; }
-    .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-left: 6px; vertical-align: middle; flex-shrink: 0; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-left: 6px; vertical-align: middle; }
     .dot.green  { background: #22c55e; }
     .dot.yellow { background: #eab308; }
     .item-name { font-size: 14px; }
@@ -53,33 +45,21 @@
     .assignee-select.assigned { border-color: #86efac; background: #f0fdf4; color: #166534; font-weight: 500; }
     .del-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ddd; background: none; cursor: pointer; color: #999; font-size: 15px; display: flex; align-items: center; justify-content: center; }
     .del-btn:hover { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
-
-    /* info tab (family) */
     .item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; border: 1px solid #e0ddd6; margin-bottom: 6px; background: #fff; }
     .item-name-plain { font-size: 14px; flex: 1; }
-
-    /* add row */
     .add-row { display: flex; gap: 8px; margin-top: 8px; }
     .add-row input { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; direction: rtl; }
     .add-row button { padding: 8px 16px; border-radius: 8px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #f5f4f0; white-space: nowrap; }
     .add-row button:hover { background: #e8e6e0; }
-
-    /* notice */
     .notice { font-size: 12px; color: #666; background: #f5f4f0; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; }
-
-    /* people tab */
     .participants-grid { display: flex; flex-wrap: wrap; gap: 8px; }
     .p-chip { display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid #e0ddd6; font-size: 14px; }
     .user-add-row { display: flex; gap: 8px; margin-top: 12px; }
     .user-add-row input { flex: 1; padding: 7px 12px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; direction: rtl; }
     .user-add-row button { padding: 6px 16px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #f5f4f0; }
-
-    /* reset */
     .reset-section { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e0ddd6; }
     .reset-btn { padding: 7px 16px; border-radius: 8px; border: 1px solid #fca5a5; font-size: 13px; cursor: pointer; background: none; color: #b91c1c; }
     .reset-btn:hover { background: #fee2e2; }
-
-    /* saving */
     .saving { position: fixed; bottom: 16px; left: 16px; font-size: 12px; color: #888; background: #fff; border: 1px solid #e0ddd6; border-radius: 999px; padding: 4px 12px; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .saving.show { opacity: 1; }
   </style>
@@ -112,44 +92,116 @@
     <h1>⛺ קמפינג היורשים</h1>
     <button class="edit-btn" id="editBtn" onclick="toggleEdit()">עריכה</button>
   </div>
-
-  <!-- shared notes -->
   <div class="notes-box">
     <div class="notes-label">📝 הערות משותפות — כולם רואים ויכולים לכתוב</div>
     <textarea id="notesArea" placeholder="כתבו כאן הערות, תזכורות, הודעות לקבוצה..." onblur="saveNotes()" oninput="notesChanged()"></textarea>
   </div>
-
   <div class="tabs-wrapper" id="tabsWrapper"></div>
   <div id="content"></div>
 </div>
 <div class="saving" id="savingIndicator">שומר...</div>
 
 <script>
-/* ── defaults ─────────────────────────────────────────── */
+/* ── defaults (מתוך הקובץ רשמ״צ) ───────────────────── */
 const DEFAULT_USERS = ['גפן','אלעד','צמח','דור','דידי','דן','ירדן','מייקל','מתן',"ניר ג'קי",'נמש','סער','שנירו'];
-const DEFAULT_TABS  = [
+
+const DEFAULT_TABS = [
   { id:'shared',  label:'ציוד משותף',  type:'assignee' },
-  { id:'family',  label:'ציוד משפחתי', type:'info' },
+  { id:'family',  label:'ציוד משפחתי', type:'info'     },
   { id:'super',   label:'קניות סופר',  type:'assignee' },
   { id:'butcher', label:'קניות אטליז', type:'assignee' },
-  { id:'people',  label:'משתתפים',     type:'people' }
+  { id:'people',  label:'משתתפים',     type:'people'   }
 ];
+
 const DEFAULT_LISTS = {
-  shared:  ['מנגל','פק"ל קפה + כוסות','עצים למדורה','שולחן מתקפל 1','שולחן מתקפל 2','צידנית','גזייה','מחבת','סיר גדול','מלקחיים','קרש חיתוך גדול'],
-  family:  ['אוהל','מחצלת','מזרן / שק"ש','כיסא מתקפל לכל אחד','תיק רחצה','רמקול JBL לזיווג חבורתי','פנס - עדיף תאורת חירום ביתית','מטען נייד','נייר טואלט','מגבונים לחים','קרם הגנה','אלתוש','תיק עזרה ראשונה','כובע','כפכפים','גרביים'],
-  super:   ['עגבניות','מלפפונים','פירות','שיפודים','לחמניות','פיתות','טחינה','חמוצים','זיתים','שמן','מלח','פלפל','פפריקה','שוקולד למריחה','חמאת בוטנים','חטיפים לילדים','חטיפים מלוחים','שישיות מים','שתייה קלה','ויטמינצ׳יק','בירות','ערק','כוסות חד"פ','צלחות חד"פ','סכום חד"פ','קשים','תבניות חד"פ','נייר כסף','נייר סופג','שקיות זבל גדולות','נוזל כלים','ספוג','גחלים למנגל','מדליקי פחמים','קרח'],
-  butcher: ['פרגיות לילדים','קבבים','סטייקים'],
-  people:  []
+  shared: [
+    'מנגל',
+    'פק"ל קפה + כוסות',
+    'עצים למדורה',
+    'שולחן מתקפל 1',
+    'שולחן מתקפל 2',
+    'צידנית',
+    'גזייה',
+    'מחבת',
+    'סיר גדול',
+    'מלקחיים',
+    'קרש חיתוך גדול'
+  ],
+  family: [
+    'אוהל',
+    'מחצלת',
+    'מזרן / שק"ש',
+    'כיסא מתקפל לכל אחד',
+    'תיק רחצה',
+    'רמקול JBL לזיווג חבורתי',
+    'פנס - עדיף להוסיף גם תאורת חירום ביתית',
+    'מטען נייד',
+    'נייר טואלט',
+    'מגבונים לחים',
+    'קרם הגנה',
+    'אלתוש',
+    'תיק עזרה ראשונה',
+    'כובע',
+    'כפכפים',
+    'גרביים'
+  ],
+  super: [
+    'עגבניות',
+    'מלפפונים',
+    'פירות',
+    'שיפודים',
+    'לחמניות',
+    'פיתות',
+    'טחינה',
+    'חמוצים',
+    'זיתים',
+    'שמן',
+    'מלח',
+    'פלפל',
+    'פפריקה',
+    'שוקולד למריחה',
+    'חמאת בוטנים',
+    'חטיפים לילדים',
+    'חטיפים מלוחים',
+    'שישיות מים',
+    'שתייה קלה',
+    'ויטמינצ׳יק',
+    'בירות',
+    'ערק',
+    'כוסות חד"פ',
+    'צלחות חד"פ',
+    'סכום חד"פ',
+    'קשים',
+    'תבניות חד"פ',
+    'נייר כסף',
+    'נייר סופג',
+    'שקיות זבל גדולות',
+    'סבון כלים',
+    'ספוג',
+    'גחלים למנגל',
+    'מדליקי פחמים',
+    'קרח'
+  ],
+  butcher: [
+    'פרגיות לילדים',
+    'קבבים',
+    'סטייקים'
+  ],
+  people: []
 };
-const PRESETS = { 'פק"ל קפה + כוסות':'נמש', 'עצים למדורה':'ירדן' };
+
+const PRESETS = {
+  'פק"ל קפה + כוסות': 'נמש',
+  'עצים למדורה': 'ירדן'
+};
 
 /* ── state ────────────────────────────────────────────── */
-let currentTab   = 'shared';
-let editMode     = false;
-let notesDirty   = false;
-let data         = { users:[], tabs:[], lists:{}, checks:{}, units:{}, notes:'' };
-let saveTimer    = null;
-let notesTimer   = null;
+let currentTab = 'shared';
+let editMode   = false;
+let notesDirty = false;
+let data       = { users:[], tabs:[], lists:{}, checks:{}, units:{}, notes:'' };
+let saveTimer  = null;
+let notesTimer = null;
 
 /* ── firebase ─────────────────────────────────────────── */
 function showSaving() {
@@ -164,7 +216,7 @@ async function saveData() {
 }
 async function loadData() {
   if (!window._firebaseReady)
-    await new Promise(r => window.addEventListener('firebaseReady', r, { once:true }));
+    await new Promise(r => window.addEventListener('firebaseReady', r, { once: true }));
   const snap = await window._get(window._ref(window._db, 'campingData'));
   if (snap.exists()) {
     data = snap.val();
@@ -181,11 +233,10 @@ async function loadData() {
       lists:  JSON.parse(JSON.stringify(DEFAULT_LISTS)),
       checks: {}, units: {}, notes: ''
     };
-    for (const [item,user] of Object.entries(PRESETS))
-      data.checks['shared_'+item] = { user, ts:0 };
+    for (const [item, user] of Object.entries(PRESETS))
+      data.checks['shared_' + item] = { user, ts: 0 };
     await saveData();
   }
-  // live listener — skip if we just saved notes to avoid cursor jump
   window._onValue(window._ref(window._db, 'campingData'), s => {
     if (!s.exists()) return;
     const incoming = s.val();
@@ -193,7 +244,6 @@ async function loadData() {
     incoming.units  = incoming.units  || {};
     incoming.tabs   = incoming.tabs   || DEFAULT_TABS.map(t => ({...t}));
     incoming.notes  = incoming.notes  || '';
-    // only update notes textarea if not currently editing it
     const notesEl = document.getElementById('notesArea');
     const notesFocused = notesEl && document.activeElement === notesEl;
     data = incoming;
@@ -219,15 +269,14 @@ async function saveNotes() {
 const esc      = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;');
 const getTab   = id => (data.tabs||[]).find(t => t.id === id);
 const tabItems = id => data.lists[id] || [];
-const assignee = (tid,item) => data.checks[tid+'_'+item]?.user || '';
-const unitKey  = (tid,item) => tid+'__units__'+item;
-const getUnits = (tid,item) => data.units[unitKey(tid,item)] || '';
+const assignee = (tid, item) => data.checks[tid + '_' + item]?.user || '';
+const unitKey  = (tid, item) => tid + '__units__' + item;
+const getUnits = (tid, item) => data.units[unitKey(tid, item)] || '';
 
 /* ── render ───────────────────────────────────────────── */
 function renderAll() {
   renderTabs();
   renderContent();
-  // sync notes if not focused
   const notesEl = document.getElementById('notesArea');
   if (notesEl && document.activeElement !== notesEl)
     notesEl.value = data.notes || '';
@@ -237,14 +286,14 @@ function renderTabs() {
   let html = '';
   (data.tabs||[]).forEach(t => {
     if (editMode) {
-      const w = Math.max(70, t.label.length*11+16);
+      const w = Math.max(70, t.label.length * 11 + 16);
       html += `<div class="tab-edit-wrap">
         <input class="tab-rename-input" value="${esc(t.label)}" style="width:${w}px"
           onchange="renameTab('${t.id}',this.value)">
         <button class="tab-del-btn" onclick="delTab('${t.id}')">×</button>
       </div>`;
     } else {
-      html += `<button class="tab${currentTab===t.id?' active':''}" onclick="switchTab('${t.id}')">${esc(t.label)}</button>`;
+      html += `<button class="tab${currentTab === t.id ? ' active' : ''}" onclick="switchTab('${t.id}')">${esc(t.label)}</button>`;
     }
   });
   if (editMode) html += `<button class="add-tab-btn" onclick="addTab()">+ טאב</button>`;
@@ -254,15 +303,15 @@ function renderTabs() {
 function renderContent() {
   const el  = document.getElementById('content');
   const tab = getTab(currentTab);
-  if (!tab) { el.innerHTML=''; return; }
-  if (tab.type==='people') { renderPeopleTab(el); return; }
-  if (tab.type==='info')   { renderInfoTab(el, tab); return; }
+  if (!tab) { el.innerHTML = ''; return; }
+  if (tab.type === 'people') { renderPeopleTab(el); return; }
+  if (tab.type === 'info')   { renderInfoTab(el, tab); return; }
   renderAssigneeTab(el, tab);
 }
 
 function renderPeopleTab(el) {
   const chips = data.users.map(u =>
-    `<div class="p-chip">${esc(u)}${editMode?`<button class="del-btn" onclick="delUser('${esc(u)}')">×</button>`:''}</div>`
+    `<div class="p-chip">${esc(u)}${editMode ? `<button class="del-btn" onclick="delUser('${esc(u)}')">×</button>` : ''}</div>`
   ).join('');
   const add   = editMode ? `<div class="user-add-row"><input id="newUserInput" placeholder="שם חדש..." onkeydown="if(event.key==='Enter')addUser()"><button onclick="addUser()">+ הוסף</button></div>` : '';
   const reset = editMode ? `<div class="reset-section"><button class="reset-btn" onclick="resetChecks()">איפוס כל הסימונים לקמפינג חדש</button></div>` : '';
@@ -272,8 +321,8 @@ function renderPeopleTab(el) {
 function renderInfoTab(el, tab) {
   const rows = tabItems(tab.id).map(item =>
     `<div class="item">
-      <span class="item-name-plain" style="flex:1">${esc(item)}</span>
-      ${editMode?`<button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button>`:''}
+      <span class="item-name-plain">${esc(item)}</span>
+      ${editMode ? `<button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button>` : ''}
     </div>`
   ).join('');
   const add = editMode ? addRowHTML(tab.id) : '';
@@ -282,13 +331,12 @@ function renderInfoTab(el, tab) {
 
 function renderAssigneeTab(el, tab) {
   const opts = data.users.map(u => `<option value="${esc(u)}">${esc(u)}</option>`).join('');
-  const showUnits = (tab.type === 'assignee');
 
   let html = `<table class="list-table">
     <thead><tr>
-      <th></th>
+      <th style="width:20px"></th>
       <th>פריט</th>
-      ${showUnits ? '<th class="th-units">יחידות</th>' : ''}
+      <th class="th-units">יחידות</th>
       ${!editMode ? '<th class="th-who">מי מביא?</th>' : ''}
       ${editMode  ? '<th class="th-del"></th>' : ''}
     </tr></thead><tbody>`;
@@ -299,19 +347,19 @@ function renderAssigneeTab(el, tab) {
     const rowCls = asgn ? 'row-green' : 'row-yellow';
     const dotCls = asgn ? 'green' : 'yellow';
 
-    const unitCell = showUnits
-      ? `<td style="text-align:center"><input class="units-input" type="text" value="${esc(units)}"
-            data-tab="${tab.id}" data-item="${esc(item)}"
-            onchange="setUnits(this)" onclick="event.stopPropagation()"
-            placeholder="—"></td>`
-      : '';
+    const unitCell = `<td style="text-align:center">
+      <input class="units-input" type="text" value="${esc(units)}"
+        data-tab="${tab.id}" data-item="${esc(item)}"
+        onchange="setUnits(this)" onclick="event.stopPropagation()"
+        placeholder="—">
+    </td>`;
 
     const whoCell = !editMode
-      ? `<td><select class="assignee-select${asgn?' assigned':''}"
-              data-tab="${tab.id}" data-item="${esc(item)}"
-              onchange="setAssignee(this)" onclick="event.stopPropagation()">
-              <option value="">— לא שויך —</option>${opts}
-            </select></td>`
+      ? `<td><select class="assignee-select${asgn ? ' assigned' : ''}"
+            data-tab="${tab.id}" data-item="${esc(item)}"
+            onchange="setAssignee(this)" onclick="event.stopPropagation()">
+            <option value="">— לא שויך —</option>${opts}
+          </select></td>`
       : '';
 
     const delCell = editMode
@@ -319,7 +367,7 @@ function renderAssigneeTab(el, tab) {
       : '';
 
     html += `<tr class="${editMode ? '' : rowCls}">
-      <td style="width:20px;text-align:center">${editMode ? '' : `<span class="dot ${dotCls}"></span>`}</td>
+      <td style="text-align:center">${editMode ? '' : `<span class="dot ${dotCls}"></span>`}</td>
       <td><span class="item-name">${esc(item)}</span></td>
       ${unitCell}${whoCell}${delCell}
     </tr>`;
@@ -329,7 +377,6 @@ function renderAssigneeTab(el, tab) {
   if (editMode) html += addRowHTML(tab.id);
   el.innerHTML = html;
 
-  // set dropdown values after render
   if (!editMode) {
     el.querySelectorAll('.assignee-select').forEach(sel => {
       sel.value = assignee(sel.dataset.tab, sel.dataset.item);
@@ -346,14 +393,12 @@ async function setAssignee(sel) {
   const { tab, item } = sel.dataset;
   const val = sel.value;
   const k   = tab + '_' + item;
-  if (val) data.checks[k] = { user:val, ts:Date.now() };
+  if (val) data.checks[k] = { user: val, ts: Date.now() };
   else     delete data.checks[k];
   await saveData();
-  // update row in-place
   const row = sel.closest('tr');
   if (row) {
-    const color = val ? 'row-green' : 'row-yellow';
-    row.className = color;
+    row.className = val ? 'row-green' : 'row-yellow';
     const dot = row.querySelector('.dot');
     if (dot) dot.className = 'dot ' + (val ? 'green' : 'yellow');
     sel.className = 'assignee-select' + (val ? ' assigned' : '');
@@ -366,7 +411,7 @@ async function setUnits(inp) {
   await saveData();
 }
 
-function switchTab(id) { currentTab=id; renderTabs(); renderContent(); }
+function switchTab(id) { currentTab = id; renderTabs(); renderContent(); }
 
 function toggleEdit() {
   editMode = !editMode;
@@ -379,63 +424,62 @@ async function addUser() {
   const inp = document.getElementById('newUserInput');
   const v   = inp.value.trim();
   if (!v || data.users.includes(v)) return;
-  data.users.push(v); inp.value='';
+  data.users.push(v); inp.value = '';
   await saveData(); renderPeopleTab(document.getElementById('content'));
 }
 async function delUser(u) {
-  if (!confirm('למחוק את '+u+'?')) return;
-  data.users = data.users.filter(x=>x!==u);
+  if (!confirm('למחוק את ' + u + '?')) return;
+  data.users = data.users.filter(x => x !== u);
   for (const k of Object.keys(data.checks))
-    if (data.checks[k]?.user===u) delete data.checks[k];
+    if (data.checks[k]?.user === u) delete data.checks[k];
   await saveData(); renderAll();
 }
 
 async function addItem(tid) {
-  const inp = document.getElementById('newItemInput_'+tid);
+  const inp = document.getElementById('newItemInput_' + tid);
   if (!inp) return;
   const v = inp.value.trim();
   if (!v) return;
-  if (!data.lists[tid]) data.lists[tid]=[];
+  if (!data.lists[tid]) data.lists[tid] = [];
   if (data.lists[tid].includes(v)) return;
-  data.lists[tid].push(v); inp.value='';
+  data.lists[tid].push(v); inp.value = '';
   await saveData(); renderContent();
 }
 async function delItem(tid, item) {
-  data.lists[tid] = (data.lists[tid]||[]).filter(x=>x!==item);
-  delete data.checks[tid+'_'+item];
-  delete data.units[unitKey(tid,item)];
+  data.lists[tid] = (data.lists[tid]||[]).filter(x => x !== item);
+  delete data.checks[tid + '_' + item];
+  delete data.units[unitKey(tid, item)];
   await saveData(); renderContent();
 }
 
 async function addTab() {
   const label = prompt('שם הטאב החדש:');
   if (!label) return;
-  const id = 'tab_'+Date.now();
-  data.tabs.push({ id, label, type:'assignee' });
+  const id = 'tab_' + Date.now();
+  data.tabs.push({ id, label, type: 'assignee' });
   data.lists[id] = [];
   currentTab = id;
   await saveData(); renderAll();
 }
 async function delTab(id) {
   if (!confirm('למחוק את הטאב?')) return;
-  data.tabs = data.tabs.filter(t=>t.id!==id);
+  data.tabs = data.tabs.filter(t => t.id !== id);
   delete data.lists[id];
   for (const k of Object.keys(data.checks))
-    if (k.startsWith(id+'_')) delete data.checks[k];
-  if (currentTab===id) currentTab = data.tabs[0]?.id||'shared';
+    if (k.startsWith(id + '_')) delete data.checks[k];
+  if (currentTab === id) currentTab = data.tabs[0]?.id || 'shared';
   await saveData(); renderAll();
 }
 async function renameTab(id, newLabel) {
-  const t = getTab(id); if (t) t.label=newLabel;
+  const t = getTab(id); if (t) t.label = newLabel;
   await saveData(); renderTabs();
 }
 async function resetChecks() {
   if (!confirm('לאפס את כל הסימונים לקמפינג חדש?')) return;
-  data.checks={}; data.units={};
+  data.checks = {}; data.units = {};
   await saveData(); renderAll();
 }
 
-/* ── expose globals ───────────────────────────────────── */
 Object.assign(window, { setAssignee, setUnits, switchTab, toggleEdit, saveNotes, notesChanged,
   addUser, delUser, addItem, delItem, addTab, delTab, renameTab, resetChecks });
 
