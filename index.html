@@ -7,15 +7,21 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Arial, sans-serif; background: #f5f4f0; color: #1a1a1a; direction: rtl; }
-    .app { max-width: 640px; margin: 0 auto; padding: 0 16px 60px; }
+    .app { max-width: 680px; margin: 0 auto; padding: 0 16px 60px; }
+
+    /* header */
     .header { padding: 1.25rem 0 0.75rem; border-bottom: 1px solid #e0ddd6; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .header h1 { font-size: 20px; font-weight: 600; white-space: nowrap; }
     .edit-btn { padding: 6px 14px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #fff; color: #444; white-space: nowrap; flex-shrink: 0; }
     .edit-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+
+    /* notes */
     .notes-box { margin-bottom: 0.75rem; }
     .notes-label { font-size: 11px; color: #999; margin-bottom: 4px; }
     .notes-box textarea { width: 100%; padding: 10px 12px; border-radius: 8px; border: 1px solid #e0ddd6; font-size: 14px; font-family: Arial, sans-serif; background: #fff; color: #1a1a1a; resize: vertical; min-height: 64px; direction: rtl; line-height: 1.5; }
     .notes-box textarea:focus { outline: none; border-color: #aaa; }
+
+    /* tabs */
     .tabs-wrapper { display: flex; align-items: center; border-bottom: 1px solid #e0ddd6; margin-bottom: 1rem; overflow-x: auto; gap: 2px; }
     .tab { padding: 8px 13px; font-size: 14px; cursor: pointer; border: none; background: none; color: #888; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; flex-shrink: 0; }
     .tab.active { color: #1a1a1a; border-bottom-color: #1a1a1a; font-weight: 500; }
@@ -25,41 +31,72 @@
     .tab-del-btn:hover { background: #fee2e2; color: #b91c1c; }
     .add-tab-btn { padding: 5px 10px; border-radius: 6px; border: 1px dashed #bbb; font-size: 12px; cursor: pointer; background: none; color: #888; flex-shrink: 0; margin-right: 4px; }
     .add-tab-btn:hover { background: #f0efe9; }
+
+    /* table */
     .list-table { width: 100%; border-collapse: separate; border-spacing: 0 5px; }
-    .list-table th { font-size: 11px; color: #999; font-weight: 500; padding: 0 8px 4px; text-align: right; }
-    .list-table th.th-units { width: 62px; text-align: center; }
-    .list-table th.th-who { width: 130px; }
-    .list-table th.th-del { width: 28px; }
-    .list-table td { background: #fff; padding: 7px 8px; border-top: 1px solid #e0ddd6; border-bottom: 1px solid #e0ddd6; vertical-align: middle; }
-    .list-table td:first-child { border-right: 1px solid #e0ddd6; border-radius: 0 8px 8px 0; }
-    .list-table td:last-child  { border-left:  1px solid #e0ddd6; border-radius: 8px 0 0 8px; }
+    .list-table th { font-size: 11px; color: #999; font-weight: 500; padding: 0 6px 4px; text-align: right; white-space: nowrap; }
+    .list-table th.th-num  { width: 52px; text-align: center; }
+    .list-table th.th-unit { width: 74px; }
+    .list-table th.th-who  { width: 136px; }
+    .list-table th.th-del  { width: 28px; }
+    .list-table td { background: #fff; padding: 6px 6px; border-top: 1px solid #e0ddd6; border-bottom: 1px solid #e0ddd6; vertical-align: middle; }
+    .list-table td:first-child { border-right: 1px solid #e0ddd6; border-radius: 0 8px 8px 0; padding-right: 10px; }
+    .list-table td:last-child  { border-left:  1px solid #e0ddd6; border-radius: 8px 0 0 8px; padding-left: 8px; }
     .row-green  td { background: #f0fdf4; border-color: #86efac; }
     .row-yellow td { background: #fefce8; border-color: #fde047; }
-    .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-left: 6px; vertical-align: middle; }
+    .row-red    td { background: #fff5f5; border-color: #fca5a5; }
+    .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-left: 5px; vertical-align: middle; flex-shrink: 0; }
     .dot.green  { background: #22c55e; }
     .dot.yellow { background: #eab308; }
+    .dot.red    { background: #ef4444; }
     .item-name { font-size: 14px; }
-    .units-input { width: 54px; font-size: 13px; padding: 3px 5px; border-radius: 6px; border: 1px solid #ddd; text-align: center; background: #fff; color: #1a1a1a; direction: ltr; }
-    .units-input:focus { outline: none; border-color: #aaa; }
-    .assignee-select { font-size: 13px; padding: 3px 6px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #555; cursor: pointer; direction: rtl; width: 100%; }
-    .assignee-select.assigned { border-color: #86efac; background: #f0fdf4; color: #166534; font-weight: 500; }
+
+    /* units: number + type side by side */
+    .units-wrap { display: flex; gap: 4px; align-items: center; }
+    .num-input { width: 46px; font-size: 13px; padding: 3px 4px; border-radius: 6px; border: 1px solid #ddd; text-align: center; background: #fff; color: #1a1a1a; direction: ltr; }
+    .num-input:focus { outline: none; border-color: #aaa; }
+    .unit-select { font-size: 12px; padding: 3px 4px; border-radius: 6px; border: 1px solid #ddd; background: #fff; color: #555; cursor: pointer; direction: rtl; width: 72px; }
+    .unit-select:focus { outline: none; border-color: #aaa; }
+
+    /* assignee dropdown */
+    .assignee-select { font-size: 13px; padding: 3px 5px; border-radius: 6px; border: 1px solid #ccc; background: #fff; color: #555; cursor: pointer; direction: rtl; width: 100%; }
+    .assignee-select.assigned  { border-color: #86efac; background: #f0fdf4; color: #166534; font-weight: 500; }
+    .assignee-select.tobuy     { border-color: #fde047; background: #fefce8; color: #854d0e; font-weight: 500; }
+
+    /* del btn */
     .del-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ddd; background: none; cursor: pointer; color: #999; font-size: 15px; display: flex; align-items: center; justify-content: center; }
     .del-btn:hover { background: #fee2e2; color: #b91c1c; border-color: #fca5a5; }
-    .item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; border: 1px solid #e0ddd6; margin-bottom: 6px; background: #fff; }
-    .item-name-plain { font-size: 14px; flex: 1; }
+
+    /* add row */
     .add-row { display: flex; gap: 8px; margin-top: 8px; }
     .add-row input { flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px; direction: rtl; }
     .add-row button { padding: 8px 16px; border-radius: 8px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #f5f4f0; white-space: nowrap; }
     .add-row button:hover { background: #e8e6e0; }
+
+    /* notice */
     .notice { font-size: 12px; color: #666; background: #f5f4f0; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; }
-    .participants-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-    .p-chip { display: flex; align-items: center; gap: 5px; padding: 6px 12px; border-radius: 999px; background: #fff; border: 1px solid #e0ddd6; font-size: 14px; }
+
+    /* info tab */
+    .item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 8px; border: 1px solid #e0ddd6; margin-bottom: 6px; background: #fff; }
+    .item-name-plain { font-size: 14px; flex: 1; }
+
+    /* people tab */
+    .participants-list { display: flex; flex-direction: column; gap: 6px; }
+    .p-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 8px; border: 1px solid #e0ddd6; background: #fff; }
+    .p-name { font-size: 14px; flex: 1; }
+    .p-move { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #ddd; background: none; cursor: pointer; color: #999; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+    .p-move:hover { background: #f0efe9; color: #555; }
+    .p-move:disabled { opacity: 0.25; cursor: default; }
     .user-add-row { display: flex; gap: 8px; margin-top: 12px; }
     .user-add-row input { flex: 1; padding: 7px 12px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; direction: rtl; }
     .user-add-row button { padding: 6px 16px; border-radius: 999px; border: 1px solid #ccc; font-size: 13px; cursor: pointer; background: #f5f4f0; }
+
+    /* reset */
     .reset-section { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e0ddd6; }
     .reset-btn { padding: 7px 16px; border-radius: 8px; border: 1px solid #fca5a5; font-size: 13px; cursor: pointer; background: none; color: #b91c1c; }
     .reset-btn:hover { background: #fee2e2; }
+
+    /* saving */
     .saving { position: fixed; bottom: 16px; left: 16px; font-size: 12px; color: #888; background: #fff; border: 1px solid #e0ddd6; border-radius: 999px; padding: 4px 12px; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .saving.show { opacity: 1; }
   </style>
@@ -102,100 +139,55 @@
 <div class="saving" id="savingIndicator">שומר...</div>
 
 <script>
-/* ── defaults (מתוך הקובץ רשמ״צ) ───────────────────── */
+/* ────────────────────────────────────────────────────────
+   DEFAULTS
+──────────────────────────────────────────────────────── */
 const DEFAULT_USERS = ['גפן','אלעד','צמח','דור','דידי','דן','ירדן','מייקל','מתן',"ניר ג'קי",'נמש','סער','שנירו'];
 
 const DEFAULT_TABS = [
-  { id:'shared',  label:'ציוד משותף',  type:'assignee' },
-  { id:'family',  label:'ציוד משפחתי', type:'info'     },
-  { id:'super',   label:'קניות סופר',  type:'assignee' },
-  { id:'butcher', label:'קניות אטליז', type:'assignee' },
-  { id:'people',  label:'משתתפים',     type:'people'   }
+  { id:'shared',  label:'ציוד משותף',   type:'assignee' },
+  { id:'family',  label:'ציוד משפחתי',  type:'info'     },
+  { id:'super',   label:'קניות - סופר', type:'shopping' },
+  { id:'butcher', label:'קניות - אטליז',type:'shopping' },
+  { id:'people',  label:'משתתפים',      type:'people'   }
 ];
 
 const DEFAULT_LISTS = {
   shared: [
-    'מנגל',
-    'פק"ל קפה + כוסות',
-    'עצים למדורה',
-    'שולחן מתקפל 1',
-    'שולחן מתקפל 2',
-    'צידנית',
-    'גזייה',
-    'מחבת',
-    'סיר גדול',
-    'מלקחיים',
-    'קרש חיתוך גדול'
+    'מנגל','פק"ל קפה + כוסות','עצים למדורה',
+    'שולחן מתקפל 1','שולחן מתקפל 2','צידנית',
+    'גזייה','מחבת','סיר גדול','מלקחיים','קרש חיתוך גדול'
   ],
   family: [
-    'אוהל',
-    'מחצלת',
-    'מזרן / שק"ש',
-    'כיסא מתקפל לכל אחד',
-    'תיק רחצה',
-    'רמקול JBL לזיווג חבורתי',
+    'אוהל','מחצלת','מזרן / שק"ש','כיסא מתקפל לכל אחד',
+    'תיק רחצה','רמקול JBL לזיווג חבורתי',
     'פנס - עדיף להוסיף גם תאורת חירום ביתית',
-    'מטען נייד',
-    'נייר טואלט',
-    'מגבונים לחים',
-    'קרם הגנה',
-    'אלתוש',
-    'תיק עזרה ראשונה',
-    'כובע',
-    'כפכפים',
-    'גרביים'
+    'מטען נייד','נייר טואלט','מגבונים לחים','קרם הגנה',
+    'אלתוש','תיק עזרה ראשונה','כובע','כפכפים','גרביים'
   ],
   super: [
-    'עגבניות',
-    'מלפפונים',
-    'פירות',
-    'שיפודים',
-    'לחמניות',
-    'פיתות',
-    'טחינה',
-    'חמוצים',
-    'זיתים',
-    'שמן',
-    'מלח',
-    'פלפל',
-    'פפריקה',
-    'שוקולד למריחה',
-    'חמאת בוטנים',
-    'חטיפים לילדים',
-    'חטיפים מלוחים',
-    'שישיות מים',
-    'שתייה קלה',
-    'ויטמינצ׳יק',
-    'בירות',
-    'ערק',
-    'כוסות חד"פ',
-    'צלחות חד"פ',
-    'סכום חד"פ',
-    'קשים',
-    'תבניות חד"פ',
-    'נייר כסף',
-    'נייר סופג',
-    'שקיות זבל גדולות',
-    'סבון כלים',
-    'ספוג',
-    'גחלים למנגל',
-    'מדליקי פחמים',
-    'קרח'
+    'עגבניות','מלפפונים','פירות','שיפודים','לחמניות',
+    'פיתות','טחינה','חמוצים','זיתים','שמן','מלח','פלפל',
+    'פפריקה','שוקולד למריחה','חמאת בוטנים','חטיפים לילדים',
+    'חטיפים מלוחים','שישיות מים','שתייה קלה','ויטמינצ׳יק',
+    'בירות','ערק','כוסות חד"פ','צלחות חד"פ','סכום חד"פ',
+    'קשים','תבניות חד"פ','נייר כסף','נייר סופג',
+    'שקיות זבל גדולות','סבון כלים','ספוג',
+    'גחלים למנגל','מדליקי פחמים','קרח'
   ],
-  butcher: [
-    'פרגיות לילדים',
-    'קבבים',
-    'סטייקים'
-  ],
-  people: []
+  butcher: ['פרגיות לילדים','קבבים','סטייקים'],
+  people:  []
 };
 
-const PRESETS = {
-  'פק"ל קפה + כוסות': 'נמש',
-  'עצים למדורה': 'ירדן'
-};
+const PRESETS = { 'פק"ל קפה + כוסות':'נמש', 'עצים למדורה':'ירדן' };
 
-/* ── state ────────────────────────────────────────────── */
+// special values in assignee dropdown
+const VAL_NONE  = '';
+const VAL_TOBUY = '__tobuy__';
+
+/* ────────────────────────────────────────────────────────
+   STATE
+──────────────────────────────────────────────────────── */
 let currentTab = 'shared';
 let editMode   = false;
 let notesDirty = false;
@@ -203,7 +195,9 @@ let data       = { users:[], tabs:[], lists:{}, checks:{}, units:{}, notes:'' };
 let saveTimer  = null;
 let notesTimer = null;
 
-/* ── firebase ─────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────
+   FIREBASE
+──────────────────────────────────────────────────────── */
 function showSaving() {
   const el = document.getElementById('savingIndicator');
   el.classList.add('show');
@@ -226,6 +220,17 @@ async function loadData() {
     data.lists  = data.lists  || JSON.parse(JSON.stringify(DEFAULT_LISTS));
     data.users  = data.users  || [...DEFAULT_USERS];
     data.tabs   = data.tabs   || DEFAULT_TABS.map(t => ({...t}));
+    // migration: ensure all default tabs exist
+    let migrated = false;
+    for (const dt of DEFAULT_TABS) {
+      if (!data.tabs.find(t => t.id === dt.id)) {
+        const idx = DEFAULT_TABS.findIndex(t => t.id === dt.id);
+        data.tabs.splice(Math.min(idx, data.tabs.length), 0, {...dt});
+        if (!data.lists[dt.id]) data.lists[dt.id] = JSON.parse(JSON.stringify(DEFAULT_LISTS[dt.id] || []));
+        migrated = true;
+      }
+    }
+    if (migrated) await saveData();
   } else {
     data = {
       users:  [...DEFAULT_USERS],
@@ -233,20 +238,20 @@ async function loadData() {
       lists:  JSON.parse(JSON.stringify(DEFAULT_LISTS)),
       checks: {}, units: {}, notes: ''
     };
-    for (const [item, user] of Object.entries(PRESETS))
-      data.checks['shared_' + item] = { user, ts: 0 };
+    for (const [item,user] of Object.entries(PRESETS))
+      data.checks['shared_'+item] = { user, ts:0 };
     await saveData();
   }
   window._onValue(window._ref(window._db, 'campingData'), s => {
     if (!s.exists()) return;
-    const incoming = s.val();
-    incoming.checks = incoming.checks || {};
-    incoming.units  = incoming.units  || {};
-    incoming.tabs   = incoming.tabs   || DEFAULT_TABS.map(t => ({...t}));
-    incoming.notes  = incoming.notes  || '';
-    const notesEl = document.getElementById('notesArea');
+    const inc = s.val();
+    inc.checks = inc.checks || {};
+    inc.units  = inc.units  || {};
+    inc.tabs   = inc.tabs   || DEFAULT_TABS.map(t => ({...t}));
+    inc.notes  = inc.notes  || '';
+    const notesEl     = document.getElementById('notesArea');
     const notesFocused = notesEl && document.activeElement === notesEl;
-    data = incoming;
+    data = inc;
     renderAll();
     if (!notesFocused) notesEl.value = data.notes || '';
   });
@@ -265,35 +270,39 @@ async function saveNotes() {
   await saveData();
 }
 
-/* ── helpers ──────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────
+   HELPERS
+──────────────────────────────────────────────────────── */
 const esc      = s => String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;');
 const getTab   = id => (data.tabs||[]).find(t => t.id === id);
 const tabItems = id => data.lists[id] || [];
-const assignee = (tid, item) => data.checks[tid + '_' + item]?.user || '';
-const unitKey  = (tid, item) => tid + '__units__' + item;
-const getUnits = (tid, item) => data.units[unitKey(tid, item)] || '';
+const checkVal = (tid, item) => data.checks[tid+'_'+item]?.user ?? VAL_NONE;  // '' | '__tobuy__' | name
+const unitNumK = (tid, item) => tid+'__num__'+item;
+const unitTypK = (tid, item) => tid+'__typ__'+item;
+const getNum   = (tid, item) => data.units[unitNumK(tid,item)] || '';
+const getTyp   = (tid, item) => data.units[unitTypK(tid,item)] || 'יחידות';
 
-/* ── render ───────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────
+   RENDER
+──────────────────────────────────────────────────────── */
 function renderAll() {
-  renderTabs();
-  renderContent();
+  renderTabs(); renderContent();
   const notesEl = document.getElementById('notesArea');
-  if (notesEl && document.activeElement !== notesEl)
-    notesEl.value = data.notes || '';
+  if (notesEl && document.activeElement !== notesEl) notesEl.value = data.notes || '';
 }
 
 function renderTabs() {
   let html = '';
   (data.tabs||[]).forEach(t => {
     if (editMode) {
-      const w = Math.max(70, t.label.length * 11 + 16);
+      const w = Math.max(70, t.label.length*11+16);
       html += `<div class="tab-edit-wrap">
         <input class="tab-rename-input" value="${esc(t.label)}" style="width:${w}px"
           onchange="renameTab('${t.id}',this.value)">
         <button class="tab-del-btn" onclick="delTab('${t.id}')">×</button>
       </div>`;
     } else {
-      html += `<button class="tab${currentTab === t.id ? ' active' : ''}" onclick="switchTab('${t.id}')">${esc(t.label)}</button>`;
+      html += `<button class="tab${currentTab===t.id?' active':''}" onclick="switchTab('${t.id}')">${esc(t.label)}</button>`;
     }
   });
   if (editMode) html += `<button class="add-tab-btn" onclick="addTab()">+ טאב</button>`;
@@ -303,73 +312,143 @@ function renderTabs() {
 function renderContent() {
   const el  = document.getElementById('content');
   const tab = getTab(currentTab);
-  if (!tab) { el.innerHTML = ''; return; }
-  if (tab.type === 'people') { renderPeopleTab(el); return; }
-  if (tab.type === 'info')   { renderInfoTab(el, tab); return; }
+  if (!tab) { el.innerHTML=''; return; }
+  if (tab.type==='people')   { renderPeopleTab(el); return; }
+  if (tab.type==='info')     { renderInfoTab(el, tab); return; }
+  if (tab.type==='shopping') { renderShoppingTab(el, tab); return; }
   renderAssigneeTab(el, tab);
 }
 
+/* people tab — with up/down reorder */
 function renderPeopleTab(el) {
-  const chips = data.users.map(u =>
-    `<div class="p-chip">${esc(u)}${editMode ? `<button class="del-btn" onclick="delUser('${esc(u)}')">×</button>` : ''}</div>`
-  ).join('');
+  const users = data.users;
+  let rows = '';
+  if (editMode) {
+    rows = users.map((u, i) =>
+      `<div class="p-row">
+        <span class="p-name">${esc(u)}</span>
+        <button class="p-move" onclick="moveUser(${i},-1)" ${i===0?'disabled':''}>▲</button>
+        <button class="p-move" onclick="moveUser(${i},1)"  ${i===users.length-1?'disabled':''}>▼</button>
+        <button class="del-btn" onclick="delUser('${esc(u)}')">×</button>
+      </div>`
+    ).join('');
+  } else {
+    rows = users.map(u => `<div class="p-row"><span class="p-name">${esc(u)}</span></div>`).join('');
+  }
   const add   = editMode ? `<div class="user-add-row"><input id="newUserInput" placeholder="שם חדש..." onkeydown="if(event.key==='Enter')addUser()"><button onclick="addUser()">+ הוסף</button></div>` : '';
   const reset = editMode ? `<div class="reset-section"><button class="reset-btn" onclick="resetChecks()">איפוס כל הסימונים לקמפינג חדש</button></div>` : '';
-  el.innerHTML = `<div class="participants-grid">${chips}</div>${add}${reset}`;
+  el.innerHTML = `<div class="participants-list">${rows}</div>${add}${reset}`;
 }
 
+/* info tab (family) */
 function renderInfoTab(el, tab) {
   const rows = tabItems(tab.id).map(item =>
     `<div class="item">
       <span class="item-name-plain">${esc(item)}</span>
-      ${editMode ? `<button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button>` : ''}
+      ${editMode?`<button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button>`:''}
     </div>`
   ).join('');
-  const add = editMode ? addRowHTML(tab.id) : '';
-  el.innerHTML = `<div class="notice">רשימת המלצות גורפת — ציוד שכדאי שכל משפחה תביא</div>${rows}${add}`;
+  el.innerHTML = `<div class="notice">רשימת המלצות גורפת — ציוד שכדאי שכל משפחה תביא</div>${rows}${editMode?addRowHTML(tab.id):''}`;
 }
 
-function renderAssigneeTab(el, tab) {
-  const opts = data.users.map(u => `<option value="${esc(u)}">${esc(u)}</option>`).join('');
+/* shopping tab — red/yellow/green + num+unit columns */
+function renderShoppingTab(el, tab) {
+  const opts = buildOpts();
 
   let html = `<table class="list-table">
     <thead><tr>
-      <th style="width:20px"></th>
+      <th style="width:18px"></th>
       <th>פריט</th>
-      <th class="th-units">יחידות</th>
+      <th class="th-num">כמות</th>
+      <th class="th-unit">סוג</th>
+      ${!editMode ? '<th class="th-who">מי קונה?</th>' : ''}
+      ${editMode  ? '<th class="th-del"></th>' : ''}
+    </tr></thead><tbody>`;
+
+  tabItems(tab.id).forEach(item => {
+    const val    = checkVal(tab.id, item);
+    const num    = getNum(tab.id, item);
+    const typ    = getTyp(tab.id, item);
+    const { rowCls, dotCls } = shoppingColor(val);
+
+    const numCell = `<td style="text-align:center">
+      <input class="num-input" type="number" min="1" max="100" value="${esc(num)}"
+        data-tab="${tab.id}" data-item="${esc(item)}" data-field="num"
+        onchange="setUnitField(this)" onclick="event.stopPropagation()" placeholder="—">
+    </td>`;
+
+    const typCell = `<td>
+      <select class="unit-select"
+        data-tab="${tab.id}" data-item="${esc(item)}" data-field="typ"
+        onchange="setUnitField(this)" onclick="event.stopPropagation()">
+        <option value="יחידות"${typ==='יחידות'?' selected':''}>יחידות</option>
+        <option value="קילו"${typ==='קילו'?' selected':''}>קילו</option>
+      </select>
+    </td>`;
+
+    const whoCell = !editMode ? `<td>
+      <select class="assignee-select${val===VAL_TOBUY?' tobuy':val?' assigned':''}"
+        data-tab="${tab.id}" data-item="${esc(item)}"
+        onchange="setAssignee(this)" onclick="event.stopPropagation()">
+        ${opts}
+      </select>
+    </td>` : '';
+
+    const delCell = editMode ? `<td><button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button></td>` : '';
+
+    html += `<tr class="${editMode?'':rowCls}">
+      <td>${editMode?'':`<span class="dot ${dotCls}"></span>`}</td>
+      <td><span class="item-name">${esc(item)}</span></td>
+      ${numCell}${typCell}${whoCell}${delCell}
+    </tr>`;
+  });
+
+  html += `</tbody></table>`;
+  if (editMode) html += addRowHTML(tab.id);
+  el.innerHTML = html;
+
+  // set dropdown values after render
+  if (!editMode) {
+    el.querySelectorAll('.assignee-select').forEach(sel => {
+      const v = checkVal(sel.dataset.tab, sel.dataset.item);
+      sel.value = v;
+      sel.className = 'assignee-select' + (v===VAL_TOBUY?' tobuy':v?' assigned':'');
+    });
+  }
+}
+
+/* assignee tab (shared equipment) — green/yellow, no shopping options */
+function renderAssigneeTab(el, tab) {
+  const opts = `<option value="">— לא שויך —</option>` +
+    data.users.map(u=>`<option value="${esc(u)}">${esc(u)}</option>`).join('');
+
+  let html = `<table class="list-table">
+    <thead><tr>
+      <th style="width:18px"></th>
+      <th>פריט</th>
       ${!editMode ? '<th class="th-who">מי מביא?</th>' : ''}
       ${editMode  ? '<th class="th-del"></th>' : ''}
     </tr></thead><tbody>`;
 
   tabItems(tab.id).forEach(item => {
-    const asgn   = assignee(tab.id, item);
-    const units  = getUnits(tab.id, item);
-    const rowCls = asgn ? 'row-green' : 'row-yellow';
-    const dotCls = asgn ? 'green' : 'yellow';
+    const val    = checkVal(tab.id, item);
+    const rowCls = val ? 'row-green' : 'row-yellow';
+    const dotCls = val ? 'green'     : 'yellow';
 
-    const unitCell = `<td style="text-align:center">
-      <input class="units-input" type="text" value="${esc(units)}"
+    const whoCell = !editMode ? `<td>
+      <select class="assignee-select${val?' assigned':''}"
         data-tab="${tab.id}" data-item="${esc(item)}"
-        onchange="setUnits(this)" onclick="event.stopPropagation()"
-        placeholder="—">
-    </td>`;
+        onchange="setAssignee(this)" onclick="event.stopPropagation()">
+        ${opts}
+      </select>
+    </td>` : '';
 
-    const whoCell = !editMode
-      ? `<td><select class="assignee-select${asgn ? ' assigned' : ''}"
-            data-tab="${tab.id}" data-item="${esc(item)}"
-            onchange="setAssignee(this)" onclick="event.stopPropagation()">
-            <option value="">— לא שויך —</option>${opts}
-          </select></td>`
-      : '';
+    const delCell = editMode ? `<td><button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button></td>` : '';
 
-    const delCell = editMode
-      ? `<td><button class="del-btn" onclick="delItem('${tab.id}','${esc(item)}')">×</button></td>`
-      : '';
-
-    html += `<tr class="${editMode ? '' : rowCls}">
-      <td style="text-align:center">${editMode ? '' : `<span class="dot ${dotCls}"></span>`}</td>
+    html += `<tr class="${editMode?'':rowCls}">
+      <td>${editMode?'':`<span class="dot ${dotCls}"></span>`}</td>
       <td><span class="item-name">${esc(item)}</span></td>
-      ${unitCell}${whoCell}${delCell}
+      ${whoCell}${delCell}
     </tr>`;
   });
 
@@ -379,39 +458,65 @@ function renderAssigneeTab(el, tab) {
 
   if (!editMode) {
     el.querySelectorAll('.assignee-select').forEach(sel => {
-      sel.value = assignee(sel.dataset.tab, sel.dataset.item);
+      sel.value = checkVal(sel.dataset.tab, sel.dataset.item);
     });
   }
+}
+
+/* build dropdown options for shopping tabs: none → tobuy → users */
+function buildOpts() {
+  return `<option value="${VAL_NONE}">— לא משויך —</option>` +
+    `<option value="${VAL_TOBUY}">צריך לקנות</option>` +
+    data.users.map(u=>`<option value="${esc(u)}">${esc(u)}</option>`).join('');
+}
+
+function shoppingColor(val) {
+  if (!val)            return { rowCls:'row-red',    dotCls:'red'    };
+  if (val===VAL_TOBUY) return { rowCls:'row-yellow', dotCls:'yellow' };
+  return               { rowCls:'row-green',  dotCls:'green'  };
 }
 
 function addRowHTML(tid) {
   return `<div class="add-row"><input id="newItemInput_${tid}" placeholder="הוסף פריט..." onkeydown="if(event.key==='Enter')addItem('${tid}')"><button onclick="addItem('${tid}')">הוסף</button></div>`;
 }
 
-/* ── actions ──────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────
+   ACTIONS
+──────────────────────────────────────────────────────── */
 async function setAssignee(sel) {
   const { tab, item } = sel.dataset;
   const val = sel.value;
-  const k   = tab + '_' + item;
-  if (val) data.checks[k] = { user: val, ts: Date.now() };
+  const k   = tab+'_'+item;
+  if (val) data.checks[k] = { user:val, ts:Date.now() };
   else     delete data.checks[k];
   await saveData();
+  // in-place row update
   const row = sel.closest('tr');
   if (row) {
-    row.className = val ? 'row-green' : 'row-yellow';
+    const isShop = getTab(tab)?.type === 'shopping';
+    let rowCls, dotCls;
+    if (isShop) {
+      ({ rowCls, dotCls } = shoppingColor(val));
+      sel.className = 'assignee-select' + (val===VAL_TOBUY?' tobuy':val?' assigned':'');
+    } else {
+      rowCls = val?'row-green':'row-yellow';
+      dotCls = val?'green':'yellow';
+      sel.className = 'assignee-select' + (val?' assigned':'');
+    }
+    row.className = rowCls;
     const dot = row.querySelector('.dot');
-    if (dot) dot.className = 'dot ' + (val ? 'green' : 'yellow');
-    sel.className = 'assignee-select' + (val ? ' assigned' : '');
+    if (dot) dot.className = 'dot '+dotCls;
   }
 }
 
-async function setUnits(inp) {
-  const { tab, item } = inp.dataset;
-  data.units[unitKey(tab, item)] = inp.value.trim();
+async function setUnitField(inp) {
+  const { tab, item, field } = inp.dataset;
+  const k = field==='num' ? unitNumK(tab,item) : unitTypK(tab,item);
+  data.units[k] = inp.value;
   await saveData();
 }
 
-function switchTab(id) { currentTab = id; renderTabs(); renderContent(); }
+function switchTab(id) { currentTab=id; renderTabs(); renderContent(); }
 
 function toggleEdit() {
   editMode = !editMode;
@@ -424,64 +529,74 @@ async function addUser() {
   const inp = document.getElementById('newUserInput');
   const v   = inp.value.trim();
   if (!v || data.users.includes(v)) return;
-  data.users.push(v); inp.value = '';
+  data.users.push(v); inp.value='';
   await saveData(); renderPeopleTab(document.getElementById('content'));
 }
 async function delUser(u) {
-  if (!confirm('למחוק את ' + u + '?')) return;
-  data.users = data.users.filter(x => x !== u);
+  if (!confirm('למחוק את '+u+'?')) return;
+  data.users = data.users.filter(x=>x!==u);
   for (const k of Object.keys(data.checks))
-    if (data.checks[k]?.user === u) delete data.checks[k];
+    if (data.checks[k]?.user===u) delete data.checks[k];
   await saveData(); renderAll();
+}
+async function moveUser(idx, dir) {
+  const arr = data.users;
+  const to  = idx+dir;
+  if (to<0 || to>=arr.length) return;
+  [arr[idx], arr[to]] = [arr[to], arr[idx]];
+  await saveData(); renderPeopleTab(document.getElementById('content'));
 }
 
 async function addItem(tid) {
-  const inp = document.getElementById('newItemInput_' + tid);
+  const inp = document.getElementById('newItemInput_'+tid);
   if (!inp) return;
   const v = inp.value.trim();
   if (!v) return;
-  if (!data.lists[tid]) data.lists[tid] = [];
+  if (!data.lists[tid]) data.lists[tid]=[];
   if (data.lists[tid].includes(v)) return;
-  data.lists[tid].push(v); inp.value = '';
+  data.lists[tid].push(v); inp.value='';
   await saveData(); renderContent();
 }
 async function delItem(tid, item) {
-  data.lists[tid] = (data.lists[tid]||[]).filter(x => x !== item);
-  delete data.checks[tid + '_' + item];
-  delete data.units[unitKey(tid, item)];
+  data.lists[tid] = (data.lists[tid]||[]).filter(x=>x!==item);
+  delete data.checks[tid+'_'+item];
+  delete data.units[unitNumK(tid,item)];
+  delete data.units[unitTypK(tid,item)];
   await saveData(); renderContent();
 }
 
 async function addTab() {
   const label = prompt('שם הטאב החדש:');
   if (!label) return;
-  const id = 'tab_' + Date.now();
-  data.tabs.push({ id, label, type: 'assignee' });
-  data.lists[id] = [];
-  currentTab = id;
+  const id = 'tab_'+Date.now();
+  data.tabs.push({ id, label, type:'shopping' });
+  data.lists[id]=[];
+  currentTab=id;
   await saveData(); renderAll();
 }
 async function delTab(id) {
   if (!confirm('למחוק את הטאב?')) return;
-  data.tabs = data.tabs.filter(t => t.id !== id);
+  data.tabs = data.tabs.filter(t=>t.id!==id);
   delete data.lists[id];
   for (const k of Object.keys(data.checks))
-    if (k.startsWith(id + '_')) delete data.checks[k];
-  if (currentTab === id) currentTab = data.tabs[0]?.id || 'shared';
+    if (k.startsWith(id+'_')) delete data.checks[k];
+  if (currentTab===id) currentTab=data.tabs[0]?.id||'shared';
   await saveData(); renderAll();
 }
 async function renameTab(id, newLabel) {
-  const t = getTab(id); if (t) t.label = newLabel;
+  const t=getTab(id); if(t) t.label=newLabel;
   await saveData(); renderTabs();
 }
 async function resetChecks() {
   if (!confirm('לאפס את כל הסימונים לקמפינג חדש?')) return;
-  data.checks = {}; data.units = {};
+  data.checks={}; data.units={};
   await saveData(); renderAll();
 }
 
-Object.assign(window, { setAssignee, setUnits, switchTab, toggleEdit, saveNotes, notesChanged,
-  addUser, delUser, addItem, delItem, addTab, delTab, renameTab, resetChecks });
+Object.assign(window, {
+  setAssignee, setUnitField, switchTab, toggleEdit, saveNotes, notesChanged,
+  addUser, delUser, moveUser, addItem, delItem, addTab, delTab, renameTab, resetChecks
+});
 
 loadData().then(renderAll);
 </script>
